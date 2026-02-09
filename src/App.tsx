@@ -43,7 +43,6 @@ function App() {
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   
-  // Stato per la creazione inline della lista
   const [isCreatingList, setIsCreatingList] = useState(false);
   
   const [isEditingListName, setIsEditingListName] = useState(false);
@@ -131,10 +130,8 @@ function App() {
     setSelectedTaskId(id);
   };
 
-  // FIX: Attiva lo stato e scrolla in alto per vedere l'input
   const handleAddList = () => {
     setIsCreatingList(true);
-    // Scrolla in alto per mostrare il campo di input
     mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -142,24 +139,23 @@ function App() {
     exportTasks(tasks, currentList, format);
   };
 
-const handleImport = async (file: File) => {
-  const importedTasks = await importTasks(file);
-  importedTasks.forEach(task => 
-    addTask({
-      title: task.title || "",
-      note: task.note || "",
-      description: '',
-      completed: false,
-      pinned: false
-    })
-  );
-};
+  const handleImport = async (file: File) => {
+    const importedTasks = await importTasks(file);
+    importedTasks.forEach(task => 
+      addTask({
+        title: task.title || "",
+        description: task.description || '',
+        completed: false,
+        pinned: false
+      })
+    );
+  };
 
   const handleVoiceImport = async () => {
     try {
       const text = await startVoiceImport();
       if (text) {
-        const lines = text.split(/,|\n|\. /).filter(line => line.trim().length > 2);
+        const lines = text.split(/,|\\n|\\. /).filter(line => line.trim().length > 2);
         lines.forEach(line => addTask({ title: line.trim(), description: "", completed: false, pinned: false }));
       }
     } catch (error) {
@@ -177,10 +173,10 @@ const handleImport = async (file: File) => {
       if (file) {
         const mockExtractedText = prompt(
           "OCR Preview - Edit extracted text:",
-          "Buy milk\nCall mom\nFinish report"
+          "Buy milk\\nCall mom\\nFinish report"
         );
         if (mockExtractedText) {
-          const lines = mockExtractedText.split("\n").filter((line) => line.trim());
+          const lines = mockExtractedText.split("\\n").filter((line) => line.trim());
           lines.forEach((line) => addTask({ title: line.trim(), description: "", completed: false, pinned: false }));
         }
       }
@@ -219,8 +215,8 @@ const handleImport = async (file: File) => {
             showBackButton={view === "tasks"}
             onBack={handleBack}
             view={view}
-	    onDeleteList={() => {}}     // <-- AGGIUNGI QUESTA
- 	    onRenameList={() => {}}     // <-- AGGIUNGI QUESTA
+            onDeleteList={() => {}}
+            onRenameList={() => {}}
           />
         </div>
 
@@ -251,8 +247,6 @@ const handleImport = async (file: File) => {
                     searchTerm={searchTerm}
                     onSelectList={handleSelectList}
                     onCreateList={createList}
-                    onDeleteList={deleteList}
-                    onRenameList={renameList}
                     isDark={isDark}
                     isCreating={isCreatingList}
                     onToggleCreate={() => setIsCreatingList(!isCreatingList)}
@@ -403,7 +397,6 @@ const handleImport = async (file: File) => {
           )}
         </main>
 
-        {/* FAB for Lists */}
         {view === "lists" && (
           <div className="fixed bottom-24 right-4 z-50 md:absolute md:bottom-24 md:right-4">
             <button
@@ -415,7 +408,6 @@ const handleImport = async (file: File) => {
           </div>
         )}
 
-        {/* FAB for Tasks */}
         {view === "tasks" && !focusMode && (
           <div className="fixed bottom-24 right-4 z-50 md:absolute md:bottom-24 md:right-4">
             <button
