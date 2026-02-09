@@ -44,13 +44,15 @@ function App() {
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   
+  // Stato per la creazione inline della lista
+  const [isCreatingList, setIsCreatingList] = useState(false);
+  
   const [isEditingListName, setIsEditingListName] = useState(false);
   const [editedListName, setEditedListName] = useState(currentList);
   const listNameInputRef = useRef<HTMLInputElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
   const [showListMenu, setShowListMenu] = useState(false);
   
-  // Header visibility logic
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
 
@@ -60,14 +62,12 @@ function App() {
 
     const handleScroll = () => {
       const currentScrollY = container.scrollTop;
-      
       if (currentScrollY > 80 && currentScrollY > lastScrollY.current) {
         setIsHeaderVisible(false);
       } 
       else if (currentScrollY < 30 || currentScrollY < lastScrollY.current) {
         setIsHeaderVisible(true);
       }
-      
       lastScrollY.current = currentScrollY;
     };
 
@@ -128,15 +128,15 @@ function App() {
     }, 50);
   };
 
-  const handleSelectTask = (id: string) => {
+  const handleSelectTask = (id: string | null) => {
     setSelectedTaskId(id);
   };
 
+  // FIX: Attiva lo stato e scrolla in alto per vedere l'input
   const handleAddList = () => {
-    const name = prompt("Enter list name:");
-    if (name && name.trim()) {
-      createList(name.trim());
-    }
+    setIsCreatingList(true);
+    // Scrolla in alto per mostrare il campo di input
+    mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleExport = (format: "txt") => {
@@ -247,6 +247,8 @@ function App() {
                     onDeleteList={deleteList}
                     onRenameList={renameList}
                     isDark={isDark}
+                    isCreating={isCreatingList}
+                    onToggleCreate={() => setIsCreatingList(!isCreatingList)}
                   />
                 </div>
               )}
@@ -426,10 +428,14 @@ function App() {
         />
 
         {showOnboarding && (
-          <OnboardingModal onClose={() => {
-            setShowOnboarding(false);
-            localStorage.setItem("focuslist-onboarding", "true");
-          }} isDark={isDark} />
+          <OnboardingModal 
+            isOpen={showOnboarding} 
+            onClose={() => {
+              setShowOnboarding(false);
+              localStorage.setItem("focuslist-onboarding", "true");
+            }} 
+            isDark={isDark} 
+          />
         )}
       </div>
     </div>

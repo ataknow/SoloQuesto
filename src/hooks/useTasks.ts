@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+// FIX 1: Interfaccia Task aggiornata con 'created' e 'archived'
 export interface Task {
   id: string;
   title: string;
@@ -7,7 +8,8 @@ export interface Task {
   completed: boolean;
   pinned: boolean;
   list: string;
-  createdAt: number;
+  created: number;    // Aggiunto
+  archived: boolean;  // Aggiunto
 }
 
 export function useTasks() {
@@ -37,15 +39,15 @@ export function useTasks() {
     setTimeout(() => setSyncStatus("synced"), 500);
   }, [tasks, lists, currentList]);
 
-  // Returns the ID of the newly created task
-  const addTask = (taskData: Omit<Task, "id" | "createdAt" | "list">): string => {
+  // FIX 1: addTask ora inizializza 'created' e 'archived'
+  const addTask = (taskData: Omit<Task, "id" | "created" | "list" | "archived">): string => {
     const newTask: Task = {
       ...taskData,
       id: Date.now().toString(),
-      createdAt: Date.now(),
+      created: Date.now(), // Default
+      archived: false,     // Default
       list: currentList,
     };
-    // Append to bottom instead of top
     setTasks((prev) => [...prev, newTask]);
     return newTask.id;
   };
@@ -87,10 +89,8 @@ export function useTasks() {
 
   const createList = (name: string) => {
     if (name && !lists.includes(name)) {
-      // Append to bottom
       setLists((prev) => [...prev, name]);
     } else if (!name) {
-      // Allow creating empty list for immediate editing
       setLists((prev) => [...prev, name]);
     }
   };
