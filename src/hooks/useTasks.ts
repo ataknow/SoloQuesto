@@ -1,10 +1,12 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 import { Task } from "../types";
+
+export type List = string;
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [lists, setLists] = useState<string[]>(["My List"]);
-  const [currentList, setCurrentList] = useState("My List");
+  const [lists, setLists] = useState<List[]>(["My List"]);
+  const [currentList, setCurrentList] = useState<List>("My List");
   const [syncStatus, setSyncStatus] = useState<"synced" | "syncing" | "error">("synced");
 
   // Load from localStorage

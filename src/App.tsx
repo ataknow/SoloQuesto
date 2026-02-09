@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Header } from "./components/Header";
 import { TaskList } from "./components/TaskList";
 import { FocusMode } from "./components/FocusMode";
@@ -202,8 +202,6 @@ function App() {
             onSearchChange={setSearchTerm}
             onSelectList={handleSelectList}
             onCreateList={createList}
-            onDeleteList={deleteList}
-            onRenameList={renameList}
             onToggleTheme={toggleDarkMode}
             isDark={isDark}
             batteryLevel={batteryLevel}
@@ -350,7 +348,6 @@ function App() {
 
                   <TaskList
                     tasks={currentTasks}
-                    showArchived={false}
                     onUpdateTask={updateTask}
                     onDeleteTask={deleteTask}
                     onToggleComplete={toggleComplete}
@@ -422,7 +419,7 @@ function App() {
 
         <BottomNav
           currentView={view}
-          onTabChange={(v: View) => setView(v)}
+          onTabChange={setView}
           isDark={isDark}
         />
 
