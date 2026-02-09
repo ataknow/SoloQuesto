@@ -1,16 +1,5 @@
-import { useState, useEffect } from "react";
-
-// FIX 1: Interfaccia Task aggiornata con 'created' e 'archived'
-export interface Task {
-  id: string;
-  title: string;
-  description: string;
-  completed: boolean;
-  pinned: boolean;
-  list: string;
-  created: number;    // Aggiunto
-  archived: boolean;  // Aggiunto
-}
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { Task } from "../types";
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -39,13 +28,12 @@ export function useTasks() {
     setTimeout(() => setSyncStatus("synced"), 500);
   }, [tasks, lists, currentList]);
 
-  // FIX 1: addTask ora inizializza 'created' e 'archived'
-  const addTask = (taskData: Omit<Task, "id" | "created" | "list" | "archived">): string => {
+  const addTask = (taskData: Omit<Task, "id" | "createdAt" | "list" | "archived">): string => {
     const newTask: Task = {
       ...taskData,
       id: Date.now().toString(),
-      created: Date.now(), // Default
-      archived: false,     // Default
+      createdAt: Date.now(),
+      archived: false,
       list: currentList,
     };
     setTasks((prev) => [...prev, newTask]);
@@ -89,8 +77,6 @@ export function useTasks() {
 
   const createList = (name: string) => {
     if (name && !lists.includes(name)) {
-      setLists((prev) => [...prev, name]);
-    } else if (!name) {
       setLists((prev) => [...prev, name]);
     }
   };

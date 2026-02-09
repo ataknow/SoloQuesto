@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
 import { Header } from "./components/Header";
 import { TaskList } from "./components/TaskList";
 import { FocusMode } from "./components/FocusMode";
@@ -13,8 +13,7 @@ import { useDeviceStatus } from "./hooks/useDeviceStatus";
 import { useVoiceInput } from "./hooks/useVoiceInput";
 import { Plus, Menu, RefreshCw } from "lucide-react";
 import { exportTasks, importTasks } from "./utils/export";
-
-type View = "lists" | "tasks" | "import" | "settings";
+import { View } from "./types";
 
 function App() {
   const { isDark, toggleDarkMode } = useDarkMode();
@@ -423,7 +422,7 @@ function App() {
 
         <BottomNav
           currentView={view}
-          onTabChange={setView}
+          onTabChange={(v: View) => setView(v)}
           isDark={isDark}
         />
 

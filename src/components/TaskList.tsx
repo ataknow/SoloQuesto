@@ -12,7 +12,8 @@ interface TaskListProps {
   isDark: boolean;
   selectedTaskId: string | null;
   onSelectTask: (id: string | null) => void;
-  isFocusMode: boolean;
+  showArchived?: boolean;
+  isFocusMode?: boolean;
 }
 
 export function TaskList({
@@ -25,7 +26,8 @@ export function TaskList({
   isDark,
   selectedTaskId,
   onSelectTask,
-  isFocusMode,
+  showArchived = false,
+  isFocusMode = false,
 }: TaskListProps) {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 

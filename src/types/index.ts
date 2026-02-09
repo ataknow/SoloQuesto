@@ -1,10 +1,12 @@
 export interface Task {
   id: string;
   title: string;
-  note?: string;
+  description: string;
   completed: boolean;
   pinned: boolean;
-  archived: boolean;
-  createdAt: string;
   list: string;
+  createdAt: number;
+  archived: boolean;
 }
+
+export type View = "lists" | "tasks" | "import" | "settings";
