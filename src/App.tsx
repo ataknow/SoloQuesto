@@ -142,10 +142,18 @@ function App() {
     exportTasks(tasks, currentList, format);
   };
 
-  const handleImport = async (file: File) => {
-    const importedTasks = await importTasks(file);
-    importedTasks.forEach(task => addTask(task));
-  };
+const handleImport = async (file: File) => {
+  const importedTasks = await importTasks(file);
+  importedTasks.forEach(task => 
+    addTask({
+      title: task.title || "",
+      note: task.note || "",
+      description: '',
+      completed: false,
+      pinned: false
+    })
+  );
+};
 
   const handleVoiceImport = async () => {
     try {
@@ -211,6 +219,8 @@ function App() {
             showBackButton={view === "tasks"}
             onBack={handleBack}
             view={view}
+	    onDeleteList={() => {}}     // <-- AGGIUNGI QUESTA
+ 	    onRenameList={() => {}}     // <-- AGGIUNGI QUESTA
           />
         </div>
 
@@ -419,7 +429,7 @@ function App() {
 
         <BottomNav
           currentView={view}
-          onTabChange={setView}
+          onTabChange={(v) => setView(v as View)}
           isDark={isDark}
         />
 

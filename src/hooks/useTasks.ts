@@ -128,3 +128,5 @@ export function useTasks() {
     syncNow,
   };
 }
+
+export type { Task };

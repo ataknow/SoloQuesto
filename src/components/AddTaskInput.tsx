@@ -4,11 +4,11 @@ import { useVoiceInput } from "../hooks/useVoiceInput";
 
 interface AddTaskInputProps {
   onAddTask: (task: { title: string; note?: string }) => void;
-  onImportTasks: (file: File) => Promise<void>;
+  // onImportTasks rimosso
   isDark: boolean;
 }
 
-export function AddTaskInput({ onAddTask, onImportTasks }: AddTaskInputProps) {
+export function AddTaskInput({ onAddTask, isDark }: AddTaskInputProps) {
   const [title, setTitle] = useState("");
   const { isListening, startListening, stopListening } = useVoiceInput();
 
@@ -44,10 +44,10 @@ export function AddTaskInput({ onAddTask, onImportTasks }: AddTaskInputProps) {
       if (file) {
         const mockExtractedText = prompt(
           "OCR Preview - Edit extracted text:",
-          "Buy milk\nCall mom\nFinish report"
+          "Buy milk\\nCall mom\\nFinish report"
         );
         if (mockExtractedText) {
-          const lines = mockExtractedText.split("\n").filter((line) => line.trim());
+          const lines = mockExtractedText.split("\\n").filter((line) => line.trim());
           lines.forEach((line) => onAddTask({ title: line.trim() }));
         }
       }

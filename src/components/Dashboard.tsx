@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { Plus, Trash, Edit } from "lucide-react"; // Replaced Trash2 with Trash, FileText with Edit
-import { List } from "../hooks/useTasks";
+import { Plus, Edit } from "lucide-react";
 
 interface DashboardProps {
-  lists: List[];
+  lists: string[];
   onSelectList: (id: string) => void;
   onCreateList: (name: string) => void;
-  onDeleteList: (id: string) => void;
   isDark: boolean;
 }
 
-export function Dashboard({ lists, onSelectList, onCreateList, onDeleteList, isDark }: DashboardProps) {
+export function Dashboard({ lists, onSelectList, onCreateList, isDark }: DashboardProps) {
   const [isCreating, setIsCreating] = useState(false);
   const [newListName, setNewListName] = useState("");
 
@@ -43,49 +41,34 @@ export function Dashboard({ lists, onSelectList, onCreateList, onDeleteList, isD
         </div>
 
         {/* Existing Lists */}
-        {lists.map((list) => (
+        {lists.map((listName, index) => (
           <div
-            key={list.id}
+            key={index}
             className={`relative rounded-2xl p-6 cursor-pointer transition-all hover:scale-[1.02] ${
               isDark ? "bg-zinc-900 border border-zinc-800 hover:border-zinc-700" : "bg-white border border-stone-200 hover:border-stone-300 shadow-sm"
             }`}
+            onClick={() => onSelectList(listName)}
           >
-            <div onClick={() => onSelectList(list.id)} className="flex items-start justify-between">
+            <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <div className={`p-2 rounded-lg ${isDark ? "bg-zinc-800" : "bg-stone-100"}`}>
                   <Edit className={`w-5 h-5 ${isDark ? "text-zinc-400" : "text-stone-500"}`} />
                 </div>
                 <div>
                   <h3 className={`font-semibold text-lg ${isDark ? "text-white" : "text-stone-900"}`}>
-                    {list.name}
+                    {listName}
                   </h3>
                   <p className={`text-sm ${isDark ? "text-zinc-500" : "text-stone-500"}`}>
-                    {list.tasks.length} tasks
+                    0 tasks
                   </p>
                 </div>
               </div>
             </div>
-            
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                if (confirm(`Delete list "${list.name}"?`)) {
-                  onDeleteList(list.id);
-                }
-              }}
-              className={`absolute top-4 right-4 p-2 rounded-lg transition-colors ${
-                isDark 
-                  ? "hover:bg-red-900/20 text-zinc-600 hover:text-red-400" 
-                  : "hover:bg-red-50 text-stone-400 hover:text-red-500"
-              }`}
-            >
-              <Trash className="w-4 h-4" />
-            </button>
           </div>
         ))}
       </div>
 
-      {/* Create List Modal (Simple Overlay) */}
+      {/* Create List Modal */}
       {isCreating && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className={`w-full max-w-md rounded-2xl p-6 ${

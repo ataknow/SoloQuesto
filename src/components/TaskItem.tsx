@@ -12,6 +12,8 @@ interface TaskItemProps {
   isSelected: boolean;
   onSelect: () => void;
   isDragging?: boolean; // FIX: Aggiunto prop mancante
+  isFocusMode?: boolean;
+
 }
 
 export function TaskItem({

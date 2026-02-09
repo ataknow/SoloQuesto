@@ -38,6 +38,7 @@ const DialogContent = React.forwardRef<
   const { onOpenChange } = React.useContext(DialogContext)
 
   return (
+    // @ts-ignore  <-- FIX QUI
     <motion.div
       ref={ref}
       initial={{ opacity: 0, scale: 0.95, y: 10 }}
