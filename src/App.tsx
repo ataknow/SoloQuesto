@@ -144,7 +144,7 @@ function App() {
     importedTasks.forEach(task => 
       addTask({
         title: task.title || "",
-        description: task.description || '',
+        description: task.note || '',
         completed: false,
         pinned: false
       })
