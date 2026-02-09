@@ -26,7 +26,6 @@ export function TaskList({
   isDark,
   selectedTaskId,
   onSelectTask,
-  showArchived = false,
   isFocusMode = false,
 }: TaskListProps) {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);

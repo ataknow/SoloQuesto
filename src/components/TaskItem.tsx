@@ -11,9 +11,8 @@ interface TaskItemProps {
   isDark: boolean;
   isSelected: boolean;
   onSelect: () => void;
-  isDragging?: boolean; // FIX: Aggiunto prop mancante
+  isDragging?: boolean;
   isFocusMode?: boolean;
-
 }
 
 export function TaskItem({
@@ -27,7 +26,6 @@ export function TaskItem({
   onSelect,
   isDragging = false,
 }: TaskItemProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDesc, setEditDesc] = useState(task.description);
@@ -96,7 +94,6 @@ export function TaskItem({
       onKeyPress={(e) => e.key === 'Enter' && onSelect()}
       aria-label={`Task: ${task.title}`}
     >
-      {/* Drag Handle */}
       <div 
         className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-grab opacity-0 group-hover:opacity-100 transition-opacity z-10"
         onClick={(e) => e.stopPropagation()}
@@ -106,7 +103,6 @@ export function TaskItem({
       </div>
 
       <div className="flex items-start gap-3 pl-4">
-        {/* Checkbox */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -183,15 +179,11 @@ export function TaskItem({
               {task.description ? (
                 <div
                   onClick={handleDescClick}
-                  className={`mt-1 text-sm cursor-pointer transition-all ${
+                  className={`mt-1 text-sm cursor-pointer transition-all whitespace-pre-wrap ${
                     isDark ? "text-zinc-500 hover:text-zinc-300" : "text-stone-500 hover:text-stone-700"
                   }`}
                 >
-                  {isExpanded ? (
-                    <p className="whitespace-pre-wrap">{task.description}</p>
-                  ) : (
-                    <p className="truncate">{task.description}</p>
-                  )}
+                  <p>{task.description}</p>
                 </div>
               ) : (
                 <button

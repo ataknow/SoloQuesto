@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Task } from "../hooks/useTasks";
-import { Plus, X, Check } from "lucide-react";
+import { X, Check } from "lucide-react";  // <-- Plus rimosso
 
 interface ListBrowserProps {
   lists: string[];
@@ -9,10 +9,8 @@ interface ListBrowserProps {
   searchTerm: string;
   onSelectList: (list: string) => void;
   onCreateList: (name: string) => void;
-  onDeleteList: (name: string) => void;
-  onRenameList: (oldName: string, newName: string) => void;
+  // onDeleteList, onRenameList rimossi
   isDark: boolean;
-  // Nuovi props per la gestione inline
   isCreating: boolean;
   onToggleCreate: () => void;
 }
@@ -24,8 +22,7 @@ export function ListBrowser({
   searchTerm,
   onSelectList,
   onCreateList,
-  onDeleteList,
-  onRenameList,
+  // onDeleteList, onRenameList rimossi
   isDark,
   isCreating,
   onToggleCreate,
@@ -33,14 +30,12 @@ export function ListBrowser({
   const [newListName, setNewListName] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-focus quando si apre la creazione
   useEffect(() => {
     if (isCreating && inputRef.current) {
       inputRef.current.focus();
     }
   }, [isCreating]);
 
-  // Reset input quando si chiude
   useEffect(() => {
     if (!isCreating) {
       setNewListName("");
@@ -59,7 +54,7 @@ export function ListBrowser({
     if (newListName.trim()) {
       onCreateList(newListName.trim());
       setNewListName("");
-      onToggleCreate(); // Chiude il form
+      onToggleCreate();
     }
   };
 
@@ -71,7 +66,6 @@ export function ListBrowser({
   return (
     <div className="space-y-6 pt-4">
       <div className="grid grid-cols-2 gap-3">
-        {/* Card di Creazione (Inline) - Ora col-span-1 per grandezza normale */}
         {isCreating && (
           <div className={`col-span-1 p-4 rounded-2xl border transition-all ${
             isDark 
@@ -118,7 +112,6 @@ export function ListBrowser({
           </div>
         )}
 
-        {/* Liste Esistenti */}
         {filteredLists.map((list) => {
           const pendingTasks = getTaskCount(list);
           return (

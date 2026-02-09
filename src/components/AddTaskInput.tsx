@@ -4,11 +4,10 @@ import { useVoiceInput } from "../hooks/useVoiceInput";
 
 interface AddTaskInputProps {
   onAddTask: (task: { title: string; note?: string }) => void;
-  // onImportTasks rimosso
   isDark: boolean;
 }
 
-export function AddTaskInput({ onAddTask, isDark }: AddTaskInputProps) {
+export function AddTaskInput({ onAddTask }: AddTaskInputProps) {  // <-- isDark rimosso
   const [title, setTitle] = useState("");
   const { isListening, startListening, stopListening } = useVoiceInput();
 

@@ -28,17 +28,14 @@ export function Header({
   onSearchChange,
   onSelectList,
   onCreateList,
-  onDeleteList,
-  onRenameList,
+  // onDeleteList, onRenameList rimossi
   onToggleTheme,
   isDark,
   batteryLevel,
-  isOnline,
-  lastSync,
+  // isOnline, lastSync, view rimossi
   syncStatus,
   showBackButton,
   onBack,
-  view,
 }: HeaderProps) {
   const [showListDropdown, setShowListDropdown] = useState(false);
 

@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export function useVoiceInput() {
   const [isListening, setIsListening] = useState(false);
-  const [transcript, setTranscript] = useState("");
 
   const startListening = (): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -24,7 +23,6 @@ export function useVoiceInput() {
 
       recognition.onresult = (event: any) => {
         const text = event.results[0][0].transcript;
-        setTranscript(text);
         resolve(text);
       };
 
